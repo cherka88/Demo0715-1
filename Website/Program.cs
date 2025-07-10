@@ -1,4 +1,14 @@
-var builder = WebApplication.CreateBuilder(args);
+﻿var builder = WebApplication.CreateBuilder(args);
+
+//Db連線字串
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+//DB連線服務
+builder.Services.AddDbContext<DemoDbContext>(
+        options =>
+        {
+            options.UseSqlServer(connectionString);
+        });
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
