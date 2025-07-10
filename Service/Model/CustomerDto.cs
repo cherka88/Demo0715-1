@@ -1,5 +1,5 @@
 ﻿namespace Service.Model;
-public class CustomDto
+public class CustomerDto
 {
     public string CustomerId { get; set; } = null!;
 

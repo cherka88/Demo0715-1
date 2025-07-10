@@ -1,14 +1,20 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using Service.Interface;
+using Service.Services;
 
-//Db連線字串
+var builder = WebApplication.CreateBuilder(args);
+
+// Db連線字串
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-//DB連線服務
+// DB連線服務
 builder.Services.AddDbContext<DemoDbContext>(
         options =>
         {
             options.UseSqlServer(connectionString);
         });
+
+// 註冊 ICustomerService 服務
+builder.Services.AddScoped<ICustomerService, CustomerService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

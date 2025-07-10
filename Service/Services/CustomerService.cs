@@ -2,23 +2,24 @@
 
 using Microsoft.EntityFrameworkCore;
 
+using Service.Interface;
 using Service.Model;
 
-namespace Service
+namespace Service.Services
 {
-    public class CustomService
+    public class CustomerService : ICustomerService
     {
         private readonly DemoDbContext _context;
 
-        public CustomService(DemoDbContext context)
+        public CustomerService(DemoDbContext context)
         {
             _context = context;
         }
 
-        public async Task<IList<CustomDto>> GetListAsync()
+        public async Task<IList<CustomerDto>> GetListAsync()
         {
             var customers = await _context.Customers
-                .Select(c => new CustomDto
+                .Select(c => new CustomerDto
                 {
                     CustomerId = c.CustomerId,
                     CompanyName = c.CompanyName,
