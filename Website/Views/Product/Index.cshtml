@@ -1,0 +1,33 @@
+@model IEnumerable<Website.Models.Product.ProductViewModel>
+
+@{ 
+    ViewData["Title"] = "產品列表";
+}
+
+<h1>產品列表</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -15,6 +15,8 @@ builder.Services.AddDbContext<DemoDbContext>(
 
 // 註冊 ICustomerService 服務
 builder.Services.AddScoped<ICustomerService, CustomerService>();
+// 註冊 IProductService 服務
+builder.Services.AddScoped<IProductService, ProductService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
