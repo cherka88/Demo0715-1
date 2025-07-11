@@ -1,7 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+
 using Service.Interface;
+
 using Website.Models.Product;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Website.Controllers
 {
@@ -15,6 +16,7 @@ namespace Website.Controllers
             _productService = productService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var productsDto = await _productService.GetCurrentProductsAsync();

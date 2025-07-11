@@ -27,6 +27,10 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 // 註冊 IProductService 服務
 builder.Services.AddScoped<IProductService, ProductService>();
+// 註冊 IOrderService 服務
+builder.Services.AddScoped<IOrderService, OrderService>();
+// 註冊 ISupplierService 服務
+builder.Services.AddScoped<ISupplierService, SupplierService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

@@ -1,0 +1,33 @@
+@model Website.Models.OrderViewModel
+
+@if (Model.OrderDetails != null && Model.OrderDetails.Any())
+{
+    <h5>Order Details</h5>
+    <table class="table table-bordered table-sm">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Unit Price</th>
+                <th>Quantity</th>
+                <th>Discount</th>
+                <th>Extended Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var detail in Model.OrderDetails)
+            {
+                <tr>
+                    <td>@detail.ProductName</td>
+                    <td>@detail.UnitPrice.ToString("C")</td>
+                    <td>@detail.Quantity</td>
+                    <td>@detail.Discount%</td>
+                    <td>@detail.ExtendedPrice.ToString("C")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No details found for this order.</p>
+}

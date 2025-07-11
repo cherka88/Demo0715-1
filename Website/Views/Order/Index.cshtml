@@ -1,0 +1,76 @@
+@model Website.Models.OrderViewModel
+
+@{
+    ViewData["Title"] = "Customer Orders";
+}
+
+<h1>Orders for Customer: @Model.CustomerId</h1>
+
+@if (Model.Orders != null && Model.Orders.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Order Date</th>
+                <th>Required Date</th>
+                <th>Shipped Date</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model.Orders)
+            {
+                <tr>
+                    <td>@order.OrderID</td>
+                    <td>@order.OrderDate?.ToShortDateString()</td>
+                    <td>@order.RequiredDate?.ToShortDateString()</td>
+                    <td>@order.ShippedDate?.ToShortDateString()</td>
+                    <td>
+                        <button class="btn btn-info view-details-btn" data-order-id="@order.OrderID">View Details</button>
+                    </td>
+                </tr>
+                <tr id="details-row-@order.OrderID" style="display:none;">
+                    <td colspan="5">
+                        <div id="order-details-@order.OrderID"></div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No orders found for this customer.</p>
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.view-details-btn').on('click', function () {
+                var orderId = $(this).data('order-id');
+                var detailsRow = $('#details-row-' + orderId);
+                var detailsContainer = $('#order-details-' + orderId);
+
+                if (detailsRow.is(':visible')) {
+                    detailsRow.hide();
+                    detailsContainer.empty();
+                } else {
+                    $.ajax({
+                        url: '@Url.Action("Details", "Order")',
+                        type: 'GET',
+                        data: { orderId: orderId },
+                        success: function (data) {
+                            detailsContainer.html(data);
+                            detailsRow.show();
+                        },
+                        error: function () {
+                            detailsContainer.html('<p>Error loading order details.</p>');
+                            detailsRow.show();
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

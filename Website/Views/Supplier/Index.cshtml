@@ -1,0 +1,56 @@
+@model IEnumerable<Website.Models.Supplier.SupplierViewModel>
+
+@{
+    ViewData["Title"] = "Suppliers";
+}
+
+<h1>Suppliers</h1>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CompanyName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContactName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.CompanyName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ContactName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Phone)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.SupplierID" class="btn btn-warning">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.SupplierID" class="btn btn-info">Details</a> |
+                <form asp-action="Delete" asp-route-id="@item.SupplierID" method="post" style="display:inline;" onsubmit="return confirm('確定要刪除這個廠商?');">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

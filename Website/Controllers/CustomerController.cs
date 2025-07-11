@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
 
 using Service.Interface;
 
 using Website.Models.Customer;
-
-using Microsoft.AspNetCore.Authorization;
 
 namespace Website.Controllers;
 [Authorize]
@@ -16,6 +14,7 @@ public class CustomerController : Controller
         _customService = customService;
     }
 
+    [HttpGet]
     public async Task<IActionResult> Index()
     {
         var data = await _customService.GetListAsync();
