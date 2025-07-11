@@ -4,7 +4,10 @@ using Service.Interface;
 
 using Website.Models.Customer;
 
+using Microsoft.AspNetCore.Authorization;
+
 namespace Website.Controllers;
+[Authorize]
 public class CustomerController : Controller
 {
     private readonly ICustomerService _customService;

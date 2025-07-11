@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Service.Interface;
 using Website.Models.Product;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Website.Controllers
 {
+    [Authorize]
     public class ProductController : Controller
     {
         private readonly IProductService _productService;

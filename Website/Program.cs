@@ -1,5 +1,9 @@
-﻿using Service.Interface;
+﻿using Microsoft.AspNetCore.Identity;
+
+using Service.Interface;
 using Service.Services;
+
+using Website.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +16,12 @@ builder.Services.AddDbContext<DemoDbContext>(
         {
             options.UseSqlServer(connectionString);
         });
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(connectionString));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 // 註冊 ICustomerService 服務
 builder.Services.AddScoped<ICustomerService, CustomerService>();
@@ -36,10 +46,40 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapRazorPages();
+
+using (var scope = app.Services.CreateScope())
+{
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+
+    logger.LogInformation("Checking for default user 'test'.");
+    var user = await userManager.FindByNameAsync("test");
+    if (user == null)
+    {
+        logger.LogInformation("Default user 'test' not found. Creating new user.");
+        user = new IdentityUser { UserName = "test", Email = "test@example.com", EmailConfirmed = true };
+        var result = await userManager.CreateAsync(user, "Test_12345");
+        if (result.Succeeded)
+        {
+            logger.LogInformation("Default user 'test' created successfully.");
+        }
+        else
+        {
+            logger.LogError("Error creating default user 'test': {Errors}", string.Join(", ", result.Errors.Select(e => e.Description)));
+        }
+    }
+    else
+    {
+        logger.LogInformation("Default user 'test' already exists.");
+    }
+}
 
 app.Run();
